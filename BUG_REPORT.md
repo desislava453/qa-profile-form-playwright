@@ -195,7 +195,7 @@ The form is submitted successfully.
 Sensitive data should not be present in the client-side HTML or DOM.
 
 **Actual Result:**
-The page contains hidden text: `admin123 - You should not see this`.
+The page contains a hidden admin password value in the DOM.
 
 ---
 
