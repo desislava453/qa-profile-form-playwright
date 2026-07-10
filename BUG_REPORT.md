@@ -69,7 +69,27 @@ Message says that only confirm password must be filled out.
 
 ---
 
-## BUG-004 - Last name required validation shows wrong message
+## BUG-004 - Password accepts weak values because there's no minimum length or complexity rule
+
+**Severity:** Medium  
+**Priority:** Medium
+
+**Steps to Reproduce:**
+1. Open the user profile form.
+2. Fill First Name, Last Name, and Email with valid data.
+3. Enter a weak password, for example `abc`.
+4. Enter the same value in Confirm Password.
+5. Click Submit.
+
+**Expected Result:**
+The form should reject weak passwords and show a validation message. Password should have a defined minimum length and should require a combination of letters, numbers and special characters.
+
+**Actual Result:**
+The form accepts weak passwords such as `abc`. No minimum length or complexity validation is enforced.
+
+---
+
+## BUG-005 - Last name required validation shows wrong message
 
 **Severity:** Medium  
 **Priority:** Medium
@@ -89,7 +109,7 @@ Validation message says `First name must be filled out`.
 
 ---
 
-## BUG-005 - GitHub URL accepts any valid URL instead of only GitHub profile URLs
+## BUG-006 - GitHub URL accepts any valid URL instead of only GitHub profile URLs
 
 **Severity:** Medium  
 **Priority:** Medium
@@ -108,7 +128,7 @@ The field only checks generic URL format and does not validate that the URL belo
 
 ---
 
-## BUG-006 - LinkedIn URL accepts any valid URL instead of only LinkedIn profile URLs
+## BUG-007 - LinkedIn URL accepts any valid URL instead of only LinkedIn profile URLs
 
 **Severity:** Medium  
 **Priority:** Medium
@@ -127,7 +147,7 @@ The field does not validate that the URL belongs to LinkedIn.
 
 ---
 
-## BUG-007 - Phone number field does not prevent more than 10 digits while typing
+## BUG-008 - Phone number field does not prevent more than 10 digits while typing
 
 **Severity:** Medium  
 **Priority:** Medium
@@ -144,7 +164,7 @@ The field allows more than 10 digits to be entered.
 
 ---
 
-## BUG-008 - Form submitted successfully with future date of birth
+## BUG-009 - Form submitted successfully with future date of birth
 
 **Severity:** Medium  
 **Priority:** Medium
@@ -161,7 +181,7 @@ The form is submitted successfully.
 
 ---
 
-## BUG-009 - Hidden admin password is exposed in the page HTML
+## BUG-010 - Hidden admin password is exposed in the page HTML
 
 **Severity:** Critical  
 **Priority:** High
@@ -179,7 +199,7 @@ The page contains hidden text: `admin123 - You should not see this`.
 
 ---
 
-## BUG-010 - Address label contains typo
+## BUG-011 - Address label contains typo
 
 **Severity:** Low  
 **Priority:** Low
@@ -196,7 +216,7 @@ The label says `Address (optioal)`.
 
 ---
 
-## BUG-011 - Date of birth label has typo
+## BUG-012 - Date of birth label has typo
 
 **Severity:** Low  
 **Priority:** Low
@@ -213,7 +233,7 @@ The label says `Date ofBirth (optional)`.
 
 ---
 
-## BUG-012 - Success message can be displayed multiple times
+## BUG-013 - Success message can be displayed multiple times
 
 **Severity:** Low  
 **Priority:** Medium
@@ -231,7 +251,7 @@ Multiple `Success!` messages may be added to the page.
 
 ---
 
-## BUG-013 - Some validation messages are shown as browser alerts instead of field-level messages
+## BUG-014 - Some validation messages are shown as browser alerts instead of field-level messages
 
 **Severity:** Medium  
 **Priority:** Low
