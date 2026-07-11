@@ -11,7 +11,7 @@ test.beforeEach(async ({ basePage }) => {
 });
 
 
-test('Submit form with valid required data', async ({ page }) => {
+test('Submit form with valid required data', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = validRequiredUser();
 
@@ -40,7 +40,7 @@ test('Submit form with all fields valid', async ({ page }) => {
   await expect(page).toHaveURL(/firstName=John/);
 });
 
-test('Shows error when first name is empty', async ({ page }) => {
+test('Shows error when first name is empty', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -92,7 +92,7 @@ test('Shows error when last name contains invalid characters', async ({ page }) 
   expect(await profilePage.submitAndGetAlertMessage()).toBe('Last name must contain alphabetical characters only');
 });
 
-test('Shows error when email is empty', async ({ page }) => {
+test('Shows error when email is empty', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -104,7 +104,7 @@ test('Shows error when email is empty', async ({ page }) => {
   expect(await profilePage.submitAndGetAlertMessage()).toBe('Email must be filled out');
 });
 
-test('Shows error when email misses @ symbol', async ({ page }) => {
+test('Shows error when email misses @ symbol', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -118,7 +118,7 @@ test('Shows error when email misses @ symbol', async ({ page }) => {
   expect(validationMessage).toContain("Please include an '@'");
 });
 
-test('Shows error when email misses domain', async ({ page }) => {
+test('Shows error when email misses domain', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -144,7 +144,7 @@ test.fail('Shows error when password is empty - BUG-003', async ({ page }) => {
   expect(await profilePage.submitAndGetAlertMessage()).toBe('Password must be filled out');
 });
 
-test('Shows error when confirm password is empty', async ({ page }) => {
+test('Shows error when confirm password is empty', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -156,7 +156,7 @@ test('Shows error when confirm password is empty', async ({ page }) => {
   expect(await profilePage.submitAndGetAlertMessage()).toBe('Confirm password must be filled out');
 });
 
-test('Shows error when passwords do not match', async ({ page }) => {
+test('Shows error when passwords do not match', { tag: '@smoke' }, async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
   const confirmPassword = `Test${Date.now()}!`;
   const user = {
