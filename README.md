@@ -32,10 +32,10 @@ The Playwright workflow supports manual profile selection:
 2. Select the **Playwright Tests** workflow.
 3. Click **Run workflow**.
 4. Choose `full` or `smoke` from the `profile` dropdown.
-5. Choose `chromium`, `firefox`, or `webkit` from the `browser` dropdown.
+5. Choose `chromium`, `firefox`, `webkit` or `all` from the `browser` dropdown.
 
-For `push` and `pull_request`, the workflow runs the `full` profile on `chromium` by default.
+For `push` and `pull_request`, the workflow runs the `full` profile on `all` by default.
 
-For single-browser runs, the workflow publishes a direct HTML Playwright report link in the Actions summary via GitHub Pages when running from main or master.
+The workflow publishes a direct HTML Playwright report link in the Actions summary via GitHub Pages when running from main or master.
 
 Note: enable GitHub Pages in repository settings (Build and deployment source: GitHub Actions) to use the hosted HTML report link.
