@@ -41,7 +41,6 @@ The entered value is visible as plain text.
 **Severity:** Medium  
 **Priority:** Medium
 
-**Case 1 - with Confirm Password filled**
 **Steps to Reproduce:**
 1. Open the user profile form.
 2. Fill First Name, Last Name, Email, and Confirm Password with valid data.
@@ -53,19 +52,6 @@ Validation message should be shown that password must be filled out.
 
 **Actual Result:**
 Message says that passwords do not match.
-
-**Case 2 - with empty Confirm Password**
-**Steps to Reproduce:**
-1. Open the user profile form.
-2. Fill First Name, Last Name and Email with valid data.
-3. Leave Password empty.
-4. Click Submit.
-
-**Expected Result:**
-Validation message should be shown that password must be filled out.
-
-**Actual Result:**
-Message says that only confirm password must be filled out.
 
 ---
 
@@ -241,13 +227,15 @@ The label says `Date ofBirth (optional)`.
 **Steps to Reproduce:**
 1. Open the user profile form.
 2. Fill the form with valid data.
-3. Click Submit multiple times.
+3. Click Submit.
+4. Go back ( see BUG-015 ).
+5. Repeat steps 3 and 4
 
 **Expected Result:**
 Only one success message should be displayed.
 
 **Actual Result:**
-Multiple `Success!` messages may be added to the page.
+Multiple `Success!` messages are added to the page.
 
 ---
 
@@ -265,3 +253,40 @@ Field-level validation messages should be shown near the affected fields.
 
 **Actual Result:**
 Validation messages are shown as browser alert popups.
+
+---
+
+## BUG-015 - Success message disappears after submitting the form
+
+**Severity:** Medium  
+**Priority:** Medium
+
+**Steps to Reproduce:**
+1. Open the user profile form.
+2. Fill all required fields with valid data.
+3. Click Submit.
+
+**Expected Result:**
+After a successful submit, the user should see a clear success message that stays visible on the page.
+
+**Actual Result:**
+The success message appears only briefly. The page then reloads, so the message disappears. If the user clicks the browser Back button, the message can be seen again.
+
+---
+
+## BUG-016 - Password is added to the URL after form submit
+
+**Severity:** High  
+**Priority:** High
+
+**Steps to Reproduce:**
+1. Open the user profile form.
+2. Fill all required fields with valid data.
+3. Click Submit.
+4. Check the browser address bar.
+
+**Expected Result:**
+Password values should not be shown in the URL. Sensitive data should not be exposed after submitting the form.
+
+**Actual Result:**
+The password and confirm password values are included in the URL query string after the form is submitted.
