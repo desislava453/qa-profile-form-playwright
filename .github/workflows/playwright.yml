@@ -25,22 +25,23 @@ on:
         description: Browser project to run
         type: choice
         required: true
-        default: chromium
+        default: all
         options:
           - chromium
           - firefox
           - webkit
+          - all
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  test-single-browser:
+  test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     env:
       TEST_PROFILE: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.profile || 'full' }}
-      BROWSER_PROJECT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser || 'chromium' }}
+      BROWSER_PROJECT: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.browser || 'all' }}
 
     steps:
       - name: Checkout repository
@@ -55,13 +56,25 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browser
+      - name: Install selected Playwright browser
+        if: env.BROWSER_PROJECT != 'all'
         run: npx playwright install --with-deps ${BROWSER_PROJECT}
 
-      - name: Run Playwright tests
+      - name: Install all Playwright browsers
+        if: env.BROWSER_PROJECT == 'all'
+        run: npx playwright install --with-deps
+
+      - name: Run tests on selected browser
+        if: env.BROWSER_PROJECT != 'all'
         run: |
           echo "Running profile=${TEST_PROFILE} on browser=${BROWSER_PROJECT}"
           npm run test:${TEST_PROFILE} -- --project=${BROWSER_PROJECT}
+
+      - name: Run tests on all browsers
+        if: env.BROWSER_PROJECT == 'all'
+        run: |
+          echo "Running profile=${TEST_PROFILE} on all browsers"
+          npm run test:${TEST_PROFILE}
 
       - name: Prepare Playwright report for Pages
         if: always()
@@ -85,8 +98,8 @@ jobs:
           retention-days: 30
 
   deploy-playwright-report-pages:
-    needs: test-single-browser
-    if: ${{ always() && github.event_name != 'pull_request' && needs.test-single-browser.result != 'skipped' && (github.ref_name == 'main' || github.ref_name == 'master') }}
+    needs: test
+    if: ${{ always() && github.event_name != 'pull_request' && needs.test.result != 'skipped' && (github.ref_name == 'main' || github.ref_name == 'master') }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages
