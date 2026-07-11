@@ -56,7 +56,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps ${BROWSER_PROJECT}
+        run: npx playwright install --with-deps
 
       - name: Run Playwright tests
         run: |
@@ -83,3 +83,24 @@ jobs:
           path: test-results/
           if-no-files-found: ignore
           retention-days: 30
+
+  deploy-playwright-report-pages:
+    needs: test-single-browser
+    if: ${{ always() && needs.test-single-browser.result != 'skipped' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy Playwright report to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Add hosted Playwright report quick link
+        run: |
+          echo "## Hosted Playwright report" >> $GITHUB_STEP_SUMMARY
+          echo "[Open HTML report](${{ steps.deployment.outputs.page_url }})" >> $GITHUB_STEP_SUMMARY
