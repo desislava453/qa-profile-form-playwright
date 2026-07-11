@@ -65,6 +65,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run tests on selected browser
+        if: env.BROWSER_PROJECT != 'all'
         run: |
           echo "Running profile=${TEST_PROFILE} on browser=${BROWSER_PROJECT}"
           npm run test:${TEST_PROFILE} -- --project=${BROWSER_PROJECT}
