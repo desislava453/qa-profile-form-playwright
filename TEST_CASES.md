@@ -145,11 +145,11 @@ Error message is shown that last name accepts alphabetical characters only.
 **Type:** Negative
 
 **Test Data:**
-- Last Name: Smith!
+- Last Name: Smith@
 
 **Steps:**
 1. Open the user profile form.
-2. Enter `Smith!` in the Last Name field.
+2. Enter `Smith@` in the Last Name field.
 3. Fill the other mandatory fields with valid data.
 4. Click Submit.
 
