@@ -58,14 +58,24 @@ test('Shows error when first name is empty', { tag: '@smoke' }, async ({ page })
 
 test('Shows error when first name contains invalid characters', async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
-  const user = {
-  ...validRequiredUser(),
-  firstName: 'John123',
-  };
+  const invalidFirstNames = ['John123', 'John@'];
 
-  await profilePage.fillMandatoryFields(user);
+  for (const firstName of invalidFirstNames) {
+    await test.step(`First name: ${firstName}`, async () => {
+      const user = {
+        ...validRequiredUser(),
+        firstName,
+      };
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('First name must contain alphabetical characters only');
+      await profilePage.fillMandatoryFields(user);
+
+      const alertMessage = await getAlertMessageAfterAction(page, async () => {
+        await profilePage.clickSubmit();
+      });
+
+      expect(alertMessage).toBe('First name must contain alphabetical characters only');
+    });
+  }
 });
 
 test.fail('Shows error when last name is empty - BUG-005', async ({ page }) => {
@@ -77,19 +87,33 @@ test.fail('Shows error when last name is empty - BUG-005', async ({ page }) => {
 
   await profilePage.fillMandatoryFields(user);
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('Last name must be filled out');
+  const alertMessage = await getAlertMessageAfterAction(page, async () => {
+    await profilePage.clickSubmit();
+  });
+
+  expect(alertMessage).toBe('Last name must be filled out');
 });
 
 test('Shows error when last name contains invalid characters', async ({ page }) => {
   const profilePage = new ProfileCreationPage(page);
-  const user = {
-  ...validRequiredUser(),
-  lastName: 'Smith@',
-  };
+  const invalidLastNames = ['Smith123', 'Smith@'];
 
-  await profilePage.fillMandatoryFields(user);
+  for (const lastName of invalidLastNames) {
+    await test.step(`Last name: ${lastName}`, async () => {
+      const user = {
+        ...validRequiredUser(),
+        lastName,
+      };
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('Last name must contain alphabetical characters only');
+      await profilePage.fillMandatoryFields(user);
+
+      const alertMessage = await getAlertMessageAfterAction(page, async () => {
+        await profilePage.clickSubmit();
+      });
+
+      expect(alertMessage).toBe('Last name must contain alphabetical characters only');
+    });
+  }
 });
 
 test('Shows error when email is empty', { tag: '@smoke' }, async ({ page }) => {
@@ -101,10 +125,14 @@ test('Shows error when email is empty', { tag: '@smoke' }, async ({ page }) => {
 
   await profilePage.fillMandatoryFields(user);
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('Email must be filled out');
+  const alertMessage = await getAlertMessageAfterAction(page, async () => {
+    await profilePage.clickSubmit();
+  });
+
+  expect(alertMessage).toBe('Email must be filled out');
 });
 
-test('Shows error when email misses @ symbol', { tag: '@smoke' }, async ({ page }) => {
+test('Shows error when email misses @ symbol', { tag: '@smoke' }, async ({ page, browserName }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -115,10 +143,17 @@ test('Shows error when email misses @ symbol', { tag: '@smoke' }, async ({ page 
 
   const validationMessage = await profilePage.getFieldValidationMessage(profilePage.emailInput);
 
-  expect(validationMessage).toContain("Please include an '@'");
+// The validation message differs across browsers, so we check for the expected message based on the browser being used.
+  if (browserName === 'chromium') {
+    expect(validationMessage).toContain("Please include an '@'");
+  } else if (browserName === 'firefox') {
+    expect(validationMessage).toContain('Please enter an email address.');
+  } else {
+    expect(validationMessage).toContain('Enter an email address');
+  }
 });
 
-test('Shows error when email misses domain', { tag: '@smoke' }, async ({ page }) => {
+test('Shows error when email misses domain', { tag: '@smoke' }, async ({ page, browserName }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -129,7 +164,14 @@ test('Shows error when email misses domain', { tag: '@smoke' }, async ({ page })
 
   const validationMessage = await profilePage.getFieldValidationMessage(profilePage.emailInput);
 
-  expect(validationMessage).toContain("Please enter a part following '@'");
+// The validation message differs across browsers, so we check for the expected message based on the browser being used.
+  if (browserName === 'chromium') {
+    expect(validationMessage).toContain("Please enter a part following '@'");
+  } else if (browserName === 'firefox') {
+    expect(validationMessage).toContain('Please enter an email address.');
+  } else {
+    expect(validationMessage).toContain('Enter an email address');
+  }
 });
 
 test.fail('Shows error when password is empty - BUG-003', async ({ page }) => {
@@ -141,7 +183,11 @@ test.fail('Shows error when password is empty - BUG-003', async ({ page }) => {
 
   await profilePage.fillMandatoryFields(user);
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('Password must be filled out');
+  const alertMessage = await getAlertMessageAfterAction(page, async () => {
+    await profilePage.clickSubmit();
+  });
+
+  expect(alertMessage).toBe('Password must be filled out');
 });
 
 test('Shows error when confirm password is empty', { tag: '@smoke' }, async ({ page }) => {
@@ -153,7 +199,11 @@ test('Shows error when confirm password is empty', { tag: '@smoke' }, async ({ p
 
   await profilePage.fillMandatoryFields(user);
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('Confirm password must be filled out');
+  const alertMessage = await getAlertMessageAfterAction(page, async () => {
+    await profilePage.clickSubmit();
+  });
+
+  expect(alertMessage).toBe('Confirm password must be filled out');
 });
 
 test('Shows error when passwords do not match', { tag: '@smoke' }, async ({ page }) => {
@@ -166,26 +216,41 @@ test('Shows error when passwords do not match', { tag: '@smoke' }, async ({ page
 
   await profilePage.fillMandatoryFields(user);
 
-  expect(await profilePage.submitAndGetAlertMessage()).toBe('Passwords do not match');
+  const alertMessage = await getAlertMessageAfterAction(page, async () => {
+    await profilePage.clickSubmit();
+  });
+
+  expect(alertMessage).toBe('Passwords do not match');
 });
 
 test.fixme('Shows error when date of birth is future date', async ({ page }) => {
 // Test to be implemented when BUG-009 is fixed.
 });
 
-test('Shows error when phone number is invalid', async ({ page }) => {
+test('Shows error when phone number is invalid', async ({ page, browserName }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = validRequiredUser();
+  const invalidPhoneNumbers = ['12345', 'qwerty', '12345678901'];
 
   await profilePage.fillMandatoryFields(user);
-  await profilePage.fillPhone('12345');
 
-  const validationMessage = await profilePage.getFieldValidationMessage(profilePage.phoneInput);
+  for (const phoneNumber of invalidPhoneNumbers) {
+    await test.step(`Phone number: ${phoneNumber}`, async () => {
+      await profilePage.fillPhone(phoneNumber);
 
-  expect(validationMessage).toContain('Please match the requested format');
+      const validationMessage = await profilePage.getFieldValidationMessage(profilePage.phoneInput);
+
+// The validation message differs across browsers, so we check for the expected message based on the browser being used.
+      if (browserName === 'webkit') {
+        expect(validationMessage).toEqual('Match the requested format');
+      } else  {
+        expect(validationMessage).toEqual('Please match the requested format.');
+      }
+    });
+  }
 });
 
-test('Shows error when LinkedIn URL is invalid', async ({ page }) => {
+test('Shows error when LinkedIn URL is invalid', async ({ page, browserName }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = {
   ...validRequiredUser(),
@@ -196,10 +261,15 @@ test('Shows error when LinkedIn URL is invalid', async ({ page }) => {
 
   const validationMessage = await profilePage.getFieldValidationMessage(profilePage.linkedInInput);
 
-  expect(validationMessage).toContain('Please enter a URL');
+// The validation message differs across browsers, so we check for the expected message based on the browser being used.
+  if (browserName === 'webkit') {
+    expect(validationMessage).toEqual('Enter a URL');
+  } else  {
+  expect(validationMessage).toEqual('Please enter a URL.');
+  }
 });
 
-test('Shows error when GitHub URL is invalid', async ({ page }) => {
+test('Shows error when GitHub URL is invalid', async ({ page, browserName }) => {
   const profilePage = new ProfileCreationPage(page);
   const user = validRequiredUser();
 
@@ -208,5 +278,30 @@ test('Shows error when GitHub URL is invalid', async ({ page }) => {
 
   const validationMessage = await profilePage.getFieldValidationMessage(profilePage.githubInput);
 
-  expect(validationMessage).toContain('Please enter a URL');
+// The validation message differs across browsers, so we check for the expected message based on the browser being used.
+  if (browserName === 'webkit') {
+    expect(validationMessage).toEqual('Enter a URL');
+  } else  {
+    expect(validationMessage).toEqual('Please enter a URL.');
+  }
 });
+
+test('Gender selection works correctly', async ({ page }) => {
+  const profilePage = new ProfileCreationPage(page);
+  const genders = ['male', 'female', 'preferNotToSay'] as const;
+
+  for (const gender of genders) {
+    await test.step(`Gender: ${gender}`, async () => {
+      const user = validRequiredUser();
+
+      await profilePage.fillMandatoryFields(user);
+      await profilePage.selectGender(gender);
+      await profilePage.clickSubmit();
+
+      const submittedUrl = new URL(page.url());
+
+      expect(submittedUrl.searchParams.get('gender')).toBe(gender);
+    });
+  }
+});
+
