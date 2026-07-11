@@ -298,9 +298,9 @@ test('Gender selection works correctly', async ({ page }) => {
       await profilePage.selectGender(gender);
       await profilePage.clickSubmit();
 
-      const submittedUrl = new URL(page.url());
-
-      expect(submittedUrl.searchParams.get('gender')).toBe(gender);
+      await expect(page).toHaveURL(
+        (url) => url.searchParams.get('gender') === gender
+      );
     });
   }
 });
