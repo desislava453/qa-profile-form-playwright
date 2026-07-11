@@ -28,7 +28,7 @@ Application URL: https://qa-assessment.pages.dev/
 
 ## Test Approach
 
-Testing will be based on the behavior of the webpage.
+Testing will be based on the requirements and behavior of the webpage.
 
 The main techniques used are:
 

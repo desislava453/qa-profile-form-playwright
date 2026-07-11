@@ -18,9 +18,6 @@
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/desislava453/qa-profile-form-playwright/issues"
-  },
   "homepage": "https://github.com/desislava453/qa-profile-form-playwright#readme",
   "devDependencies": {
     "@playwright/test": "^1.61.1",

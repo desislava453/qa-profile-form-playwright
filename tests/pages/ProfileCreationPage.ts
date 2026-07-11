@@ -104,21 +104,6 @@ export class ProfileCreationPage {
     await this.submitButton.click();
   }
 
-// Method for catpuring browser alert messages after clicking the submit button.
-  async submitAndGetAlertMessage(): Promise<string> {
-    const alertMessagePromise = new Promise<string>((resolve) => {
-      this.page.once('dialog', async (dialog) => {
-        const message = dialog.message();
-        await dialog.accept();
-        resolve(message);
-      });
-    });
-
-    await this.clickSubmit();
-
-    return alertMessagePromise;
-  }
-
 // Generic method for capturing browser-native validation messages for any input field.
   async getFieldValidationMessage(field: Locator): Promise<string> {
     return await field.evaluate((input: HTMLInputElement) => input.validationMessage);

@@ -1,5 +1,5 @@
-# User Profile Creation E2E tests
-End-to-end (E2E) tests for the user profile creation page.
+# Playwright E2E tests
+End-to-end (E2E) tests for the User Profile Creation form, which includes field validation, error handling and successful submission.
 
 ## First local run
 

@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 
+// Generic function for capturing browser alert messages after some action is performed.
 export async function getAlertMessageAfterAction(
   page: Page,
   action: () => Promise<void>
