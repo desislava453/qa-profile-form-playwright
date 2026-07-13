@@ -87,8 +87,8 @@ GitHub Actions will be used to run the automated tests.
 
 Planned setup:
 
-- Smoke tests run automatically on push/pull request
-- Full tests can be run manually or before final review
+- Full tests run automatically on push/pull request
+- Smoke tests can be run manually or before final review
 - Playwright report is generated after test execution
 
 ## Deliverables
