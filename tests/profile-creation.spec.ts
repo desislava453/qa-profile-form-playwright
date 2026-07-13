@@ -53,7 +53,7 @@ test('Shows error when first name is empty', { tag: '@smoke' }, async ({ page })
     await profilePage.clickSubmit();
   });
 
-  expect(alertMessage).toBe('First name must be filled out');
+  expect(alertMessage).toEqual('First name must be filled out');
 });
 
 test('Shows error when first name contains invalid characters', async ({ page }) => {
@@ -73,7 +73,7 @@ test('Shows error when first name contains invalid characters', async ({ page })
         await profilePage.clickSubmit();
       });
 
-      expect(alertMessage).toBe('First name must contain alphabetical characters only');
+      expect(alertMessage).toEqual('First name must contain alphabetical characters only');
     });
   }
 });
@@ -91,7 +91,7 @@ test.fail('Shows error when last name is empty - BUG-005', async ({ page }) => {
     await profilePage.clickSubmit();
   });
 
-  expect(alertMessage).toBe('Last name must be filled out');
+  expect(alertMessage).toEqual('Last name must be filled out');
 });
 
 test('Shows error when last name contains invalid characters', async ({ page }) => {
@@ -111,7 +111,7 @@ test('Shows error when last name contains invalid characters', async ({ page }) 
         await profilePage.clickSubmit();
       });
 
-      expect(alertMessage).toBe('Last name must contain alphabetical characters only');
+      expect(alertMessage).toEqual('Last name must contain alphabetical characters only');
     });
   }
 });
@@ -129,7 +129,7 @@ test('Shows error when email is empty', { tag: '@smoke' }, async ({ page }) => {
     await profilePage.clickSubmit();
   });
 
-  expect(alertMessage).toBe('Email must be filled out');
+  expect(alertMessage).toEqual('Email must be filled out');
 });
 
 test('Shows error when email misses @ symbol', { tag: '@smoke' }, async ({ page, browserName }) => {
@@ -147,9 +147,9 @@ test('Shows error when email misses @ symbol', { tag: '@smoke' }, async ({ page,
   if (browserName === 'chromium') {
     expect(validationMessage).toContain("Please include an '@'");
   } else if (browserName === 'firefox') {
-    expect(validationMessage).toContain('Please enter an email address.');
+    expect(validationMessage).toEqual('Please enter an email address.');
   } else {
-    expect(validationMessage).toContain('Enter an email address');
+    expect(validationMessage).toEqual('Enter an email address');
   }
 });
 
@@ -168,9 +168,9 @@ test('Shows error when email misses domain', { tag: '@smoke' }, async ({ page, b
   if (browserName === 'chromium') {
     expect(validationMessage).toContain("Please enter a part following '@'");
   } else if (browserName === 'firefox') {
-    expect(validationMessage).toContain('Please enter an email address.');
+    expect(validationMessage).toEqual('Please enter an email address.');
   } else {
-    expect(validationMessage).toContain('Enter an email address');
+    expect(validationMessage).toEqual('Enter an email address');
   }
 });
 
@@ -187,7 +187,7 @@ test.fail('Shows error when password is empty - BUG-003', async ({ page }) => {
     await profilePage.clickSubmit();
   });
 
-  expect(alertMessage).toBe('Password must be filled out');
+  expect(alertMessage).toEqual('Password must be filled out');
 });
 
 test('Shows error when confirm password is empty', { tag: '@smoke' }, async ({ page }) => {
@@ -203,7 +203,7 @@ test('Shows error when confirm password is empty', { tag: '@smoke' }, async ({ p
     await profilePage.clickSubmit();
   });
 
-  expect(alertMessage).toBe('Confirm password must be filled out');
+  expect(alertMessage).toEqual('Confirm password must be filled out');
 });
 
 test('Shows error when passwords do not match', { tag: '@smoke' }, async ({ page }) => {
@@ -220,7 +220,7 @@ test('Shows error when passwords do not match', { tag: '@smoke' }, async ({ page
     await profilePage.clickSubmit();
   });
 
-  expect(alertMessage).toBe('Passwords do not match');
+  expect(alertMessage).toEqual('Passwords do not match');
 });
 
 test.fixme('Shows error when date of birth is future date', async ({ page }) => {
